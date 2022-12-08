@@ -29,9 +29,39 @@ double derivada(double x){
 }
 
 
-// Retângulo e ponto central;
+
+// Método do Retângulo  
+void metodo_retangulo_composto(double f(), double a, double b, double *pi, double *ps, int n){
+    double limite_inferior, limite_superior;
+    int i, h;
+
+    printf("A integral precisa dar algo entre: %.2lf e %.2lf \n\n", f(a)*(b-a), f(b)*(b-a));
 
 
+    limite_inferior = 0;
+    limite_superior = 0;
+
+
+    h = (b-a)/n;
+
+    for (i=0; i<n; i++){        
+        limite_inferior += f(a)*(h);
+        a+=h;
+    }
+
+    for (i=0; i<n; i++){        
+        limite_superior += f(b)*(h);
+        a+=h;
+    }
+    
+    *pi = limite_inferior;
+    *ps = limite_superior;
+    
+    return;
+}
+
+
+// Método do ponto central;
 
 
 // Trapezoidal e trapezoidal composto
