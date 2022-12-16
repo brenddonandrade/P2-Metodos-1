@@ -36,37 +36,19 @@ double derivada(double x){
 
 
 // Método do Retângulo  
-void metodo_retangulo_composto(double f(), double a, double b, double *vi, double *vs, int n){
+void metodo_retangulo(double f(), double a, double b, double *vi, double *vs){
     // vi = valor da soma usando o retangulo menor ( inferior )
     // vs = usando o maior ( superior )
 
-    // Soma usando o limite inferior e superior
-    double soma_inferior, soma_superior;
+    printf("f(a): %.2lf\n", f(a));
+    printf("f(b): %.2lf\n\n", f(b));
+    // Calculando os valores das integrais
+    *vi = f(a)*(b-a);
+    *vs = f(b)*(b-a);
 
-    int i, h;
+    printf("Metodo do Retangulo:\n");
+    printf("Limite inferior: %.2lf \nLimite superior: %.2lf\n\n", *vi, *vs);
 
-    printf("A integral precisa dar algo entre: %.2lf e %.2lf \n\n", f(a)*(b-a), f(b)*(b-a));
-
-
-    soma_inferior = 0;
-    soma_superior = 0;
-
-
-    h = (b-a)/n;
-
-    for (i=0; i<n; i++){        
-        soma_inferior += f(a)*(h);
-        a+=h;
-    }
-
-    for (i=0; i<n; i++){        
-        soma_superior += f(b)*(h);
-        a+=h;
-    }
-
-    *vi = soma_inferior;
-    *vs = soma_superior;
-    
     return;
 }
 
@@ -97,10 +79,10 @@ int main(){
     n = N;
 
     
-    // Metodo do retangulo composto
-    metodo_retangulo_composto(funcao, a, b, &si, &ss, n);
+    // Metodo do retangulo
+    metodo_retangulo(funcao, a, b, &si, &ss);
 
-    printf("Soma inferior: %.2lf\nSoma superior: %.2lf\n\n", si, ss);
+
 
 
 
