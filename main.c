@@ -2,9 +2,12 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define A -5
+// eu dividi o intervalo e vou multiplicar por 2 pois é uma funcao impar
+#define A 0
 #define B 5
-#define N 10
+#define N 100
+
+// valor exato da integral I ~ 216.36
 
 
 
@@ -25,12 +28,9 @@ double funcao(double x){
 
 // Derivada da funcao
 double derivada(double x){
-    double p1, p2;
+ 
 
-    p1 = 10 * (M_PI/10.0);
-    p2 = - sin((M_PI/10.0)*x);
-
-    return p1*p2;
+    return (-M_PI*sin((M_PI/10.0)*x));
 }
 
 
@@ -41,11 +41,11 @@ void metodo_retangulo(double f(), double a, double b, double *vi, double *vs){
     // vs = usando o maior ( superior )
 
     // Calculando os valores das integrais
-    *vi = f(a)*(b-a);
-    *vs = f(b)*(b-a);
+    *vi = 2*f(a)*(b-a);
+    *vs = 2*f(b)*(b-a);
 
     printf("\nMetodo do Retangulo:\n");
-    printf("I_i: %.2lf \nI_s: %.2lf\n\n", *vi, *vs);
+    printf("I_i~ %.2lf \nI_s~ %.2lf\n\n", *vi, *vs);
 
     return;
 }
@@ -54,22 +54,24 @@ void metodo_retangulo(double f(), double a, double b, double *vi, double *vs){
 // Método do ponto central;
 void metodo_ponto_central(double f(), double a, double b, double *m){
     //Calculando a integral
-    *m = f(((a+b)/2.0))*(b-a);
+    *m = 2*(f(((a+b)/2.0))*(b-a));
+
 
     printf("Metodo do Ponto Central:\n");
-    printf("I: %.2lf\n\n", *m);
+    printf("I~ %.2lf\n\n", *m);
 
     return;
 }
 
 
+
 // Trapezoidal 
 void metodo_trapezoidal(double f(), double a, double b, double *t){
     // Calculando  a integral
-    *t = ((f(a) + f(b))/2.0)*(b-a);
+    *t = 2*(((f(a) + f(b))/2.0)*(b-a));
 
     printf("Metodo do Trapezio:\n");
-    printf("I: %.2f\n\n", *t);
+    printf("I~ %.2f\n\n", *t);
 
     return;
 }
@@ -79,13 +81,13 @@ void metodo_trapezoidal(double f(), double a, double b, double *t){
 
 // Trapezoidal composto
 void metodo_trapezoidal_composto(double f(), double a, double b, double *tc, int n){
-    int h;
+    double h;
     double soma, xi;
 
     soma = 0;
 
     // Largura do interval = h
-    h = (b-a)/n;
+    h = (b-a)/((float) n);
 
 
     // Calculando a integral
@@ -94,29 +96,63 @@ void metodo_trapezoidal_composto(double f(), double a, double b, double *tc, int
         soma += f(xi);
         xi+=h;
     
-    }while(xi != (b-h));
+    }while(xi < (b-h));
     soma *= h;
 
-    soma = (h/2.0)*(f(a)+ f(b));
+    soma += (h/2.0)*(f(a)+ f(b));
 
 
-    *tc = soma;
+    *tc = 2*soma;
 
     printf("Metodo do Trapezio Composto:\n");
-    printf("I: %.2f\n\n", *tc);
+    printf("I~ %.2f\n\n", *tc);
 
     return;
 }
 
 
-// Simpson, Simpson 1/3 e Simpson3 /8
+// Simpson 1/3 
+void metodo_simpson_1_3(double f(), double a, double b, double *s1, int n){
+    double h;
+
+    h = (b-a)/((float) n);
+
+    // Calculando a integral
+    *s1 =  2*((h/3)*(f(a) + (4*f((a+b)/2.0)) + f(b)));
+
+    
+    printf("Metodo de Simpson 1/3:\n");
+    printf("I~ %.2lf\n\n", *s1);
+
+    return;
+}
+
+
+
+// Simpson 3/8
+void metodo_simpson_3_8(double f(), double a, double b, double *s3, int n){
+    double h, x2, x3;
+
+    h = (b-a)/((float) n);
+    x2 = a+h;
+    x3 = x2+h;
+    
+    // Calculo da integral
+    *s3 = 2*((3/8)*h*(f(a) + (3*f(x2)) + (3*f(x3)) + f(b)));
+
+    printf("Metodo de Simpson 3/8:\n");
+    printf("I~ %.2lf\n\n", *s3);
+
+    return;
+}
+
 
 
 
 int main(){
     // soma do retangulo inferior ( menor )
     // ss = soma superior
-    double a, b, si, ss, m, t, tc;
+    double a, b, si, ss, m, t, tc, s1, s3;
 
     // n é o nume de retangulos considerado
     int n;
@@ -139,8 +175,11 @@ int main(){
     // Metodo Trapezoidal composto
     metodo_trapezoidal_composto(funcao, a, b, &tc, n);
     
-    
-    //
+    // Metodo de Simpson 1/3
+    metodo_simpson_1_3(funcao, a, b, &s1, n); 
+
+    // Metodo de Simpson 3/8
+    metodo_simpson_3_8(funcao, a, b, &s3, n);
 
     return 0;
 }
