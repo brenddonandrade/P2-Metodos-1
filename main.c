@@ -40,25 +40,73 @@ void metodo_retangulo(double f(), double a, double b, double *vi, double *vs){
     // vi = valor da soma usando o retangulo menor ( inferior )
     // vs = usando o maior ( superior )
 
-    printf("f(a): %.2lf\n", f(a));
-    printf("f(b): %.2lf\n\n", f(b));
     // Calculando os valores das integrais
     *vi = f(a)*(b-a);
     *vs = f(b)*(b-a);
 
-    printf("Metodo do Retangulo:\n");
-    printf("Limite inferior: %.2lf \nLimite superior: %.2lf\n\n", *vi, *vs);
+    printf("\nMetodo do Retangulo:\n");
+    printf("I_i: %.2lf \nI_s: %.2lf\n\n", *vi, *vs);
 
     return;
 }
 
 
 // Método do ponto central;
+void metodo_ponto_central(double f(), double a, double b, double *m){
+    //Calculando a integral
+    *m = f(((a+b)/2.0))*(b-a);
+
+    printf("Metodo do Ponto Central:\n");
+    printf("I: %.2lf\n\n", *m);
+
+    return;
+}
 
 
-// Trapezoidal e trapezoidal composto
+// Trapezoidal 
+void metodo_trapezoidal(double f(), double a, double b, double *t){
+    // Calculando  a integral
+    *t = ((f(a) + f(b))/2.0)*(b-a);
+
+    printf("Metodo do Trapezio:\n");
+    printf("I: %.2f\n\n", *t);
+
+    return;
+}
 
 
+
+
+// Trapezoidal composto
+void metodo_trapezoidal_composto(double f(), double a, double b, double *tc, int n){
+    int h;
+    double soma, xi;
+
+    soma = 0;
+
+    // Largura do interval = h
+    h = (b-a)/n;
+
+
+    // Calculando a integral
+    xi = a+h;
+    do {
+        soma += f(xi);
+        xi+=h;
+    
+    }while(xi != (b-h));
+    soma *= h;
+
+    soma = (h/2.0)*(f(a)+ f(b));
+
+
+    *tc = soma;
+
+    printf("Metodo do Trapezio Composto:\n");
+    printf("I: %.2f\n\n", *tc);
+
+    return;
+}
 
 
 // Simpson, Simpson 1/3 e Simpson3 /8
@@ -68,7 +116,7 @@ void metodo_retangulo(double f(), double a, double b, double *vi, double *vs){
 int main(){
     // soma do retangulo inferior ( menor )
     // ss = soma superior
-    double a, b, si, ss;
+    double a, b, si, ss, m, t, tc;
 
     // n é o nume de retangulos considerado
     int n;
@@ -82,11 +130,17 @@ int main(){
     // Metodo do retangulo
     metodo_retangulo(funcao, a, b, &si, &ss);
 
+    // Metodo do Ponto Central
+    metodo_ponto_central(funcao, a, b, &m);
 
+    // Metodo Trapezoidal
+    metodo_trapezoidal(funcao, a, b, &t);
 
-
-
-
+    // Metodo Trapezoidal composto
+    metodo_trapezoidal_composto(funcao, a, b, &tc, n);
     
+    
+    //
+
     return 0;
 }
