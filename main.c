@@ -121,7 +121,7 @@ void metodo_simpson_1_3(double f(), double a, double b, double *s1){
     *s1 =  2*((h/3)*(f(a) + (4*f((a+b)/2.0)) + f(b)));
 
     
-    printf("Metodo de Simpson 1/3:\n");
+    printf("Metodo de Simpson 1/3---------------------------------------------------\n");
     printf("I~ %.2lf\n\n", *s1);
 
     return;
@@ -131,19 +131,21 @@ void metodo_simpson_1_3(double f(), double a, double b, double *s1){
 
 // Simpson 3/8
 void metodo_simpson_3_8(double f(), double a, double b, double *s3){
-    double h, x2, x3;
+    double h, x2, x3, p1, p2, p3;
 
     h = (b-a)/3.0;
     x2 = a+h;
     x3 = x2+h;
 
     
+    p1 = 2*(3/8.0)*h;
+    p2 = f(a) + f(b);
+    p3 = (3*f(x2)) + (3*f(x3));
+
     // Calculo da integral
-    *s3 = 2*((3/8)*h*(f(a) + 3*f(x2) + 3*f(x3) + f(b)));
+    *s3 = p1*(p2 + p3);
 
-    printf("Antes do calculo: f(a): %.2lf\t3*f(x2): %.2lf\t3*f(x3): %.2lf\tf(b): %.2lf\n\n\n", f(a), 3*f(x2), 3*f(x3), f(b));
-
-    printf("Metodo de Simpson 3/8:\n");
+    printf("Metodo de Simpson 3/8---------------------------------------------------\n");
     printf("I~ %.2lf\n\n", *s3);
 
     return;
@@ -183,6 +185,8 @@ int main(){
 
     // Metodo de Simpson 3/8
     metodo_simpson_3_8(funcao, a, b, &s3);
+
+    printf("Pelo que podemos ver, o método do Retangulo só serve para ter uma estimativa máxima e menina do valor possível, colocando um limite nos valores possíveis. \nJá o método do ponto centro se aproxima bem melhor se comparado com o do retangulo.\nO do trapézio anda junto com o do ponto central e ainda não proporciona um valor que poderiamos considerar bem proximo correto.\nO unico metodo composto usado foi o que da o valor mais preciso.\nOs dois métodos de simpson foi o que melhor funcionaram pesto dos outros que não dividiam o intevalo com n porcoes iguais como o do composto.\n\n");
 
     return 0;
 }
