@@ -5,7 +5,7 @@
 // eu dividi o intervalo e vou multiplicar por 2 pois é uma funcao impar
 #define A 0
 #define B 5
-#define N 100
+#define N 10000
 
 // valor exato da integral I ~ 216.36
 
@@ -20,7 +20,7 @@ double funcao(double x){
 
     //Particionando a funcao
     p1 = 2 * M_PI *x;
-    p2 = sqrt(1+ pow(abs(derivada(x)),2));
+    p2 = sqrt(1+ pow(derivada(x),2));
 
     return p1*p2;
 }
@@ -44,7 +44,7 @@ void metodo_retangulo(double f(), double a, double b, double *vi, double *vs){
     *vi = 2*f(a)*(b-a);
     *vs = 2*f(b)*(b-a);
 
-    printf("\nMetodo do Retangulo:\n");
+    printf("\nMetodo do Retangulo--------------------------------------------------------\n");
     printf("I_i~ %.2lf \nI_s~ %.2lf\n\n", *vi, *vs);
 
     return;
@@ -57,7 +57,7 @@ void metodo_ponto_central(double f(), double a, double b, double *m){
     *m = 2*(f(((a+b)/2.0))*(b-a));
 
 
-    printf("Metodo do Ponto Central:\n");
+    printf("Metodo do Ponto Central---------------------------------------------------\n");
     printf("I~ %.2lf\n\n", *m);
 
     return;
@@ -70,7 +70,7 @@ void metodo_trapezoidal(double f(), double a, double b, double *t){
     // Calculando  a integral
     *t = 2*(((f(a) + f(b))/2.0)*(b-a));
 
-    printf("Metodo do Trapezio:\n");
+    printf("Metodo do Trapezio---------------------------------------------------\n");
     printf("I~ %.2f\n\n", *t);
 
     return;
@@ -104,7 +104,7 @@ void metodo_trapezoidal_composto(double f(), double a, double b, double *tc, int
 
     *tc = 2*soma;
 
-    printf("Metodo do Trapezio Composto:\n");
+    printf("Metodo do Trapezio Composto---------------------------------------------------\n");
     printf("I~ %.2f\n\n", *tc);
 
     return;
@@ -112,10 +112,10 @@ void metodo_trapezoidal_composto(double f(), double a, double b, double *tc, int
 
 
 // Simpson 1/3 
-void metodo_simpson_1_3(double f(), double a, double b, double *s1, int n){
+void metodo_simpson_1_3(double f(), double a, double b, double *s1){
     double h;
 
-    h = (b-a)/((float) n);
+    h = (b-a)/2.0;
 
     // Calculando a integral
     *s1 =  2*((h/3)*(f(a) + (4*f((a+b)/2.0)) + f(b)));
@@ -130,15 +130,18 @@ void metodo_simpson_1_3(double f(), double a, double b, double *s1, int n){
 
 
 // Simpson 3/8
-void metodo_simpson_3_8(double f(), double a, double b, double *s3, int n){
+void metodo_simpson_3_8(double f(), double a, double b, double *s3){
     double h, x2, x3;
 
-    h = (b-a)/((float) n);
+    h = (b-a)/3.0;
     x2 = a+h;
     x3 = x2+h;
+
     
     // Calculo da integral
-    *s3 = 2*((3/8)*h*(f(a) + (3*f(x2)) + (3*f(x3)) + f(b)));
+    *s3 = 2*((3/8)*h*(f(a) + 3*f(x2) + 3*f(x3) + f(b)));
+
+    printf("Antes do calculo: f(a): %.2lf\t3*f(x2): %.2lf\t3*f(x3): %.2lf\tf(b): %.2lf\n\n\n", f(a), 3*f(x2), 3*f(x3), f(b));
 
     printf("Metodo de Simpson 3/8:\n");
     printf("I~ %.2lf\n\n", *s3);
@@ -176,10 +179,10 @@ int main(){
     metodo_trapezoidal_composto(funcao, a, b, &tc, n);
     
     // Metodo de Simpson 1/3
-    metodo_simpson_1_3(funcao, a, b, &s1, n); 
+    metodo_simpson_1_3(funcao, a, b, &s1); 
 
     // Metodo de Simpson 3/8
-    metodo_simpson_3_8(funcao, a, b, &s3, n);
+    metodo_simpson_3_8(funcao, a, b, &s3);
 
     return 0;
 }
